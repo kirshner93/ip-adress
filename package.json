@@ -1,0 +1,23 @@
+{
+  "name": "mars",
+  "version": "1.0.0",
+  "main": "index.js",
+  "homepage": "https://kirshner93.github.io/geo-ip-adress/",
+  "scripts": {
+    "start": "parcel index.html --open",
+    "build": "parcel build index.html --out-dir build",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "leaflet": "^1.7.1"
+  },
+  "devDependencies": {
+    "gh-pages": "^3.2.3",
+    "parcel-bundler": "^1.12.5"
+  }
+}
