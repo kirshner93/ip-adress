@@ -1,5 +1,5 @@
 import L from 'leaflet';
-// import myIcons from 'leaflet/dist/images/marker-icon.png'
+import myIcons from 'leaflet/dist/images/marker-icon.png'
 
 
 let input = document.querySelector('.search-bar__input');
@@ -13,7 +13,7 @@ const timezone = document.querySelector('.timezone');
 
 const map = L.map('map').setView([51.505, -0.09], 13);
 const myIcon = L.icon({
-    iconUrl: '&#10084',
+    iconUrl: myIcons,
     iconSize: [38, 55],
     
 });
