@@ -14194,21 +14194,17 @@ var _markerIcon = _interopRequireDefault(require("leaflet/dist/images/marker-ico
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+let input = document.querySelector('.search-bar__input');
+const title = document.querySelector('#adress');
+const btn = document.querySelector('.search-bar__btn');
+const ip = document.querySelector('#ip');
+const location = document.querySelector('#location');
+const isp = document.querySelector('#isp');
+const timezone = document.querySelector('.timezone');
 
-function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+const map = _leaflet.default.map('map').setView([51.505, -0.09], 13);
 
-var input = document.querySelector('.search-bar__input');
-var title = document.querySelector('#adress');
-var btn = document.querySelector('.search-bar__btn');
-var ip = document.querySelector('#ip');
-var location = document.querySelector('#location');
-var isp = document.querySelector('#isp');
-var timezone = document.querySelector('.timezone');
-
-var map = _leaflet.default.map('map').setView([51.505, -0.09], 13);
-
-var myIcon = _leaflet.default.icon({
+const myIcon = _leaflet.default.icon({
   iconUrl: _markerIcon.default,
   iconSize: [38, 55]
 });
@@ -14233,99 +14229,40 @@ function getData() {
   }
 }
 
-function getLocation(_x) {
-  return _getLocation.apply(this, arguments);
+async function getLocation(num) {
+  let response = await fetch(`https://ipapi.co/${num}/json/`);
+  let data = await response.json();
+  print(data);
 }
 
-function _getLocation() {
-  _getLocation = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(ip) {
-    var response, data;
-    return regeneratorRuntime.wrap(function _callee$(_context) {
-      while (1) {
-        switch (_context.prev = _context.next) {
-          case 0:
-            _context.next = 2;
-            return fetch("https://geo.ipify.org/api/v2/country,city?apiKey=at_qhYBMWTdwukpBDyJA9hZjssbQQ7Bm&ipAddress=".concat(ip));
-
-          case 2:
-            response = _context.sent;
-            _context.next = 5;
-            return response.json();
-
-          case 5:
-            data = _context.sent;
-            setInfo(data);
-
-          case 7:
-          case "end":
-            return _context.stop();
-        }
-      }
-    }, _callee);
-  }));
-  return _getLocation.apply(this, arguments);
-}
-
-function getMeLocation() {
-  return _getMeLocation.apply(this, arguments);
-}
-
-function _getMeLocation() {
-  _getMeLocation = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
-    var response, data;
-    return regeneratorRuntime.wrap(function _callee2$(_context2) {
-      while (1) {
-        switch (_context2.prev = _context2.next) {
-          case 0:
-            _context2.next = 2;
-            return fetch('https://ipapi.co/json/');
-
-          case 2:
-            response = _context2.sent;
-            _context2.next = 5;
-            return response.json();
-
-          case 5:
-            data = _context2.sent;
-            console.log(data);
-            print(data);
-
-          case 8:
-          case "end":
-            return _context2.stop();
-        }
-      }
-    }, _callee2);
-  }));
-  return _getMeLocation.apply(this, arguments);
+async function getMeLocation() {
+  let response = await fetch('https://ipapi.co/json/');
+  let data = await response.json();
+  print(data);
 }
 
 function print(data) {
   console.log(data);
-  title.innerHTML = "\u0432\u044B \u0441\u0435\u0439\u0447\u0430\u0441 \u0437\u0434\u0435\u0441\u044C : ".concat(data.city, ", ").concat(data.region, ", \u0412\u0430\u0448 ip : ").concat(data.ip, " ");
+  title.innerHTML = `вы сейчас здесь : ${data.city}, ${data.region}, Ваш ip : ${data.ip} `;
   ip.innerHTML = data.ip;
-  location.innerHTML = "".concat(data.region, " ").concat(data.city);
+  location.innerHTML = `${data.region} ${data.city}`;
   timezone.innerHTML = data.utc_offset;
-  isp.innerHTML = data.version;
+  isp.innerHTML = data.org;
   map.setView([data.latitude, data.longitude]);
 
   _leaflet.default.marker([data.latitude, data.longitude], {
     icon: myIcon
   }).addTo(map);
-}
+} // function setInfo(data) {
+//     title.innerHTML = 'Поиск по IP адресу';
+//     ip.innerHTML = data.ip;
+//     location.innerHTML = `${data.location.region} ${data.location.city}`
+//     timezone.innerHTML = data.location.timezone;
+//     isp.innerHTML = data.isp;
+//     map.setView([data.location.lat, data.location.lng]);
+//     L.marker([data.location.lat, data.location.lng], ).addTo(map);
+// };
 
-function setInfo(data) {
-  title.innerHTML = 'Поиск по IP адресу';
-  ip.innerHTML = data.ip;
-  location.innerHTML = "".concat(data.location.region, " ").concat(data.location.city);
-  timezone.innerHTML = data.location.timezone;
-  isp.innerHTML = data.isp;
-  map.setView([data.location.lat, data.location.lng]);
-
-  _leaflet.default.marker([data.location.lat, data.location.lng]).addTo(map);
-}
-
-;
 
 function validatIp(ip, title) {
   if (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(ip)) {
@@ -14363,7 +14300,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59399" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53842" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

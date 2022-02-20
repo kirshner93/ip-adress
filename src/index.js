@@ -45,16 +45,18 @@ function getData() {
 
     // нужна праверка валидности вводимых данных
     if (validatIp(input.value, title)) {
-        getLocation (input.value);
+        getLocation(input.value);
         
     }
     
 }
 
-async function getLocation (ip) {
-    let response = await fetch(`https://geo.ipify.org/api/v2/country,city?apiKey=at_qhYBMWTdwukpBDyJA9hZjssbQQ7Bm&ipAddress=${ip}`);
+async function getLocation (num) {
+    let response = await fetch(`https://ipapi.co/${num}/json/`);
     let data = await response.json();
-    setInfo(data)
+
+    print(data);
+    
     
 }
 
@@ -62,7 +64,6 @@ async function getMeLocation () {
     let response = await fetch('https://ipapi.co/json/');
     let data = await response.json();
 
-    console.log(data);
     print(data)
     
 }
@@ -74,25 +75,25 @@ function print(data) {
     ip.innerHTML = data.ip;
     location.innerHTML = `${data.region} ${data.city}`
     timezone.innerHTML = data.utc_offset;
-    isp.innerHTML = data.version
+    isp.innerHTML = data.org
 
     map.setView([data.latitude, data.longitude]);
     L.marker([data.latitude, data.longitude], {icon: myIcon}, ).addTo(map);
 }
 
-function setInfo(data) {
-    title.innerHTML = 'Поиск по IP адресу';
+// function setInfo(data) {
+//     title.innerHTML = 'Поиск по IP адресу';
    
     
-    ip.innerHTML = data.ip;
-    location.innerHTML = `${data.location.region} ${data.location.city}`
-    timezone.innerHTML = data.location.timezone;
-    isp.innerHTML = data.isp;
+//     ip.innerHTML = data.ip;
+//     location.innerHTML = `${data.location.region} ${data.location.city}`
+//     timezone.innerHTML = data.location.timezone;
+//     isp.innerHTML = data.isp;
 
-    map.setView([data.location.lat, data.location.lng]);
-    L.marker([data.location.lat, data.location.lng], ).addTo(map);
+//     map.setView([data.location.lat, data.location.lng]);
+//     L.marker([data.location.lat, data.location.lng], ).addTo(map);
    
-};
+// };
 
 function validatIp(ip, title) {
     if (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(ip)) {
